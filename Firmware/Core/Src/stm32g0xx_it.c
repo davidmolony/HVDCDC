@@ -22,6 +22,8 @@
 #include "stm32g0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "HVDCDC.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,6 +76,7 @@ void NMI_Handler(void)
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
   while (1)
   {
+	  phU_Break();
   }
   /* USER CODE END NonMaskableInt_IRQn 1 */
 }
@@ -89,6 +92,7 @@ void HardFault_Handler(void)
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+	  phU_Break();
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }
@@ -102,7 +106,7 @@ void SVC_Handler(void)
 
   /* USER CODE END SVC_IRQn 0 */
   /* USER CODE BEGIN SVC_IRQn 1 */
-
+	  phU_Break();
   /* USER CODE END SVC_IRQn 1 */
 }
 
@@ -115,7 +119,7 @@ void PendSV_Handler(void)
 
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */
-
+	  phU_Break();
   /* USER CODE END PendSV_IRQn 1 */
 }
 
@@ -146,11 +150,10 @@ void SysTick_Handler(void)
 void ADC1_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC1_IRQn 0 */
-
+fast_loop();
   /* USER CODE END ADC1_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC1_IRQn 1 */
-
   /* USER CODE END ADC1_IRQn 1 */
 }
 
