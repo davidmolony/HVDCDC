@@ -164,4 +164,4 @@ VP_SYS_VS_Systick.Signal=SYS_VS_Systick
 VP_TIM1_VS_no_output4.Mode=PWM Generation4 No Output
 VP_TIM1_VS_no_output4.Signal=TIM1_VS_no_output4
 board=custom
-isbadioc=true
+isbadioc=false

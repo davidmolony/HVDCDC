@@ -10,9 +10,13 @@
 
 extern TIM_HandleTypeDef htim1;
 extern uint16_t ADC_Buffer[4];
-uint32_t Converted_ADC[4];
+volatile uint32_t Converted_ADC[4];
 uint8_t Overcurrent_occurred, Overvoltage_occurred;
 static int doPID;
+volatile static uint32_t PWMout, P_PWMout;
+volatile static uint32_t PWM_FF, PWM_FF_lim;
+
+
 
 //Put this into the PWM interrupt to control the currents and disable/enable the PWM
 void fast_loop(){
@@ -30,21 +34,51 @@ static int doPID;
 	}
 	if(doPID){
 		if(ADC_Buffer[VOUT_CH]>RAW_SETPOINT){
-			htim1.Instance->CCR1 = htim1.Instance->CCR1 -1;
-			if(htim1.Instance->CCR1<2){
-				htim1.Instance->CCR1 = 2;
+			PWMout = PWMout-1;
+			if(PWMout<20){
+				PWMout = 20;
 			}
+			P_PWMout = ADC_Buffer[VOUT_CH]-RAW_SETPOINT;
+			if(P_PWMout>18){
+				P_PWMout = 18;
+			}
+			htim1.Instance->CCR1 = PWMout-P_PWMout;
+//			htim1.Instance->CCR1 = htim1.Instance->CCR1 -1;
+//			if(htim1.Instance->CCR1<2){
+//				htim1.Instance->CCR1 = 2;
+//			}
 		}
 		if(ADC_Buffer[VOUT_CH]<RAW_SETPOINT){
-			htim1.Instance->CCR1 = htim1.Instance->CCR1 +1;
-			if(htim1.Instance->CCR1>htim1.Instance->ARR-100){
-				htim1.Instance->CCR1 = htim1.Instance->ARR-100;
+			PWMout = PWMout+1;
+			if(PWMout>PWM_FF_lim){
+				PWMout = PWM_FF_lim;
 			}
+//			P_PWMout = RAW_SETPOINT-ADC_Buffer[VOUT_CH];
+			if(P_PWMout>18){
+				P_PWMout = 18;
+			}
+			htim1.Instance->CCR1 = PWMout+ P_PWMout;
+//			htim1.Instance->CCR1 = htim1.Instance->CCR1 +1;
+//			if(htim1.Instance->CCR1>htim1.Instance->ARR-100){
+//				htim1.Instance->CCR1 = htim1.Instance->ARR-100;
+//			}
 		}
 	}
-	Converted_ADC[VOUT_CH] = ADC_Buffer[VOUT_CH]*MICROVOLTSOUTPERCOUNT;
-	Converted_ADC[IOUT_CH] = ADC_Buffer[IOUT_CH]*MICROAMPSPERCOUNT;
-	Converted_ADC[VIN_CH] = ADC_Buffer[VIN_CH]*MICROVOLTSINPERCOUNT;
+
+}
+void whileoneloop(){
+  	Converted_ADC[VOUT_CH] = ADC_Buffer[VOUT_CH]*MICROVOLTSOUTPERCOUNT;
+  	Converted_ADC[IOUT_CH] = ADC_Buffer[IOUT_CH]*MICROAMPSPERCOUNT;
+  	Converted_ADC[VIN_CH] = ADC_Buffer[VIN_CH]*MICROVOLTSINPERCOUNT;
+
+  	PWM_FF = (htim1.Instance->ARR*(Converted_ADC[VOUT_CH]>>4))/(Converted_ADC[VIN_CH]>>4);
+  	PWM_FF_lim = (htim1.Instance->ARR*((SETPOINT*1000000)>>4))/(Converted_ADC[VIN_CH]>>4)+100;
+  	if(PWM_FF_lim>htim1.Instance->ARR-100){
+  		PWM_FF_lim=htim1.Instance->ARR-100;
+  	}
+  	if(PWM_FF_lim<100){
+  		PWM_FF_lim=100;
+  	}
 }
 
 // Turn all phase U FETs off, Tristate the HBridge output

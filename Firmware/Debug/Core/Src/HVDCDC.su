@@ -1,3 +1,4 @@
-../Core/Src/HVDCDC.c:18:6:fast_loop	8	static
-../Core/Src/HVDCDC.c:52:8:phU_Break	8	static
-../Core/Src/HVDCDC.c:62:8:phU_Enable	8	static
+../Core/Src/HVDCDC.c:22:6:fast_loop	8	static
+../Core/Src/HVDCDC.c:69:6:whileoneloop	16	static
+../Core/Src/HVDCDC.c:86:8:phU_Break	0	static
+../Core/Src/HVDCDC.c:96:8:phU_Enable	0	static

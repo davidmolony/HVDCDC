@@ -43,6 +43,7 @@
 #define TEMP_CH 3
 
 void fast_loop();
+void whileoneloop();
 void phU_Break();
 void phU_Enable() ;
 

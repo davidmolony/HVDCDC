@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "HVDCDC.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -60,6 +61,7 @@ static void MX_TIM1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+extern uint32_t Converted_ADC[4];
 
 /* USER CODE END 0 */
 
@@ -95,8 +97,8 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_ADCEx_Calibration_Start(&hadc1);
-  //HAL_Delay(100);
+  HAL_ADCEx_Calibration_Start(&hadc1);
+  HAL_Delay(5);
   HAL_ADC_Start_DMA(&hadc1, ADC_Buffer, 4);
 HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
@@ -110,6 +112,7 @@ __HAL_ADC_ENABLE_IT(&hadc1, ADC_IT_EOS);
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+whileoneloop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

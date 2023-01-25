@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "HVDCDC.h"
+extern TIM_HandleTypeDef htim1;
 
 /* USER CODE END Includes */
 
@@ -147,13 +148,17 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles ADC1 interrupt.
   */
+
+volatile static int entry, exit;
 void ADC1_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC1_IRQn 0 */
+	entry = htim1.Instance-> CNT;
 fast_loop();
   /* USER CODE END ADC1_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC1_IRQn 1 */
+	exit = htim1.Instance-> CNT;
   /* USER CODE END ADC1_IRQn 1 */
 }
 
