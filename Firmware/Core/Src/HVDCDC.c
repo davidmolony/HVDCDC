@@ -76,8 +76,8 @@ void whileoneloop(){
   	if(PWM_FF_lim>htim1.Instance->ARR-100){
   		PWM_FF_lim=htim1.Instance->ARR-100;
   	}
-  	if(PWM_FF_lim<100){
-  		PWM_FF_lim=100;
+  	if(PWM_FF_lim<50){
+  		PWM_FF_lim=50;
   	}
 }
 

@@ -2555,12 +2555,12 @@ void whileoneloop(){
  80013cc:	6aea      	ldr	r2, [r5, #44]	; 0x2c
  80013ce:	3a64      	subs	r2, #100	; 0x64
  80013d0:	601a      	str	r2, [r3, #0]
-  	if(PWM_FF_lim<100){
+  	if(PWM_FF_lim<50){
  80013d2:	681a      	ldr	r2, [r3, #0]
- 80013d4:	2a63      	cmp	r2, #99	; 0x63
+ 80013d4:	2a31      	cmp	r2, #49	; 0x31
  80013d6:	d801      	bhi.n	80013dc <whileoneloop+0x7c>
-  		PWM_FF_lim=100;
- 80013d8:	2264      	movs	r2, #100	; 0x64
+  		PWM_FF_lim=50;
+ 80013d8:	2232      	movs	r2, #50	; 0x32
  80013da:	601a      	str	r2, [r3, #0]
 }
  80013dc:	bd70      	pop	{r4, r5, r6, pc}

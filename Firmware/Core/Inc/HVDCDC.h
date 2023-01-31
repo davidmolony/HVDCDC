@@ -13,7 +13,7 @@
 #define RECOVERYVOLTAGE 11	//After an over voltage event, wait until this voltage to restart the inverter
 #define CURR_MAX 3  //Max output current read on the output shunt
 #define INPUT_MIN 15	//Minimum input voltage, below this shut down to avoid unexpected dropout
-#define INPUT MAX 24 //Max input voltage (above this need to shut down to avoid FET damage
+#define INPUT_MAX 24 //Max input voltage (above this need to shut down to avoid FET damage
 
 #define RVOUTTOP 10000
 #define RVOUTBOT 2200
